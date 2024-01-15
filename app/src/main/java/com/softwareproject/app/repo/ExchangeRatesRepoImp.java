@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -27,13 +29,24 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
 
     @Override
-    public ExchangeRate findByBase(String base) {
-        return jdbcTemplate.queryForObject("SELECT * FROM exchange_rates WHERE base = ?", new Object[] { base }, ExchangeRate.class);
+    public ExchangeRate findByBase(String code) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM exchange_rates WHERE code = ?",
+                    BeanPropertyRowMapper.newInstance(ExchangeRate.class), code).get(0);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return null;
+        }
     }
 
 
     @Override
-    public void save() throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<String> save() throws JsonMappingException, JsonProcessingException {
+
+        // before saving the new exchange rates, delete all the existing exchange rates
+        jdbcTemplate.update("DELETE FROM exchange_rates");
+        
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-RapidAPI-Key", apiKey);
         headers.set("X-RapidAPI-Host", apiHost);
@@ -61,7 +74,9 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
 
             // Save the new exchange rate to the database
             saveExchangeRateToDatabase(newExchangeRate);
+
         });
+        return new ResponseEntity<String>("Exchange rates updated successfully", HttpStatus.OK);
     }
 
     private void saveExchangeRateToDatabase(ExchangeRate exchangeRate) {
@@ -70,17 +85,32 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     }
 
     @Override
-    public double convert(String from, String to, double amount) {
-        ExchangeRate fromRate = findByBase(from);
-        ExchangeRate toRate = findByBase(to);
-        return amount * fromRate.getRate() / toRate.getRate();
+    public ResponseEntity<Double> convert(String from, String to, double amount) {
+        try {
+            ExchangeRate fromRate = findByBase(from);
+            System.out.println(fromRate.getRate());
+            ExchangeRate toRate = findByBase(to);
+            System.out.println(toRate.getRate());
+            double result = amount * fromRate.getRate() / toRate.getRate();
+
+            return new ResponseEntity<Double>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<Double>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
     @Override
-    public List<String> getAllCodes() {
+    public ResponseEntity<List<String>> getAllCodes() {
         
-        return jdbcTemplate.queryForList("SELECT code FROM exchange_rates", String.class);
+        try {
+            List<String> codes = jdbcTemplate.queryForList("SELECT code FROM exchange_rates", String.class);
+            return new ResponseEntity<List<String>>(codes, HttpStatus.OK);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

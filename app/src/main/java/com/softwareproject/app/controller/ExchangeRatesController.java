@@ -2,14 +2,17 @@ package com.softwareproject.app.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.softwareproject.app.repo.ExchangeRatesRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.softwareproject.app.repo.ExchangeRatesRepoImp;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -20,28 +23,32 @@ public class ExchangeRatesController {
     @Autowired
     private ExchangeRatesRepoImp exchangeRatesRepoImp;
 
-    @RequestMapping(value = "/convert", method = RequestMethod.GET)
-    public double convert(@RequestParam String from, @RequestParam String to, @RequestParam double amount) {
+    // localhost:8080/api/v1/convert?from=USD&to=EUR&amount=100
+    @GetMapping(value = "/convert")
+    public ResponseEntity<Double> convert(@RequestParam String from, @RequestParam String to, @RequestParam double amount) {
         return exchangeRatesRepoImp.convert(from, to, amount);
     }
 
     /**
      * @return
      */
-    @RequestMapping(value = "/codes", method = RequestMethod.GET)
-    public String[] getAllCodes() {
-        return exchangeRatesRepoImp.getAllCodes().toArray(new String[0]);
+    // localhost:8080/api/v1/codes
+    @GetMapping(value = "/codes")
+    public ResponseEntity<List<String>> getAllCodes() {
+        return exchangeRatesRepoImp.getAllCodes();
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    // localhost:8080/api/v1/update
+    @GetMapping(value = "/update" )
     public ResponseEntity<String> update() {
         try {
-            exchangeRatesRepoImp.save();
-            return new ResponseEntity<>("Exchange rates updated successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error updating exchange rates", HttpStatus.INTERNAL_SERVER_ERROR);
+            return exchangeRatesRepoImp.save();
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            return new ResponseEntity<String>("{\"message\": \"Error updating exchange rates\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            return new ResponseEntity<String>("{\"message\": \"Error updating exchange rates\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }
