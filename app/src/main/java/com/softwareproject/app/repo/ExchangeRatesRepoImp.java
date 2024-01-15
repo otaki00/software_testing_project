@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -27,8 +28,8 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
 
     @Override
-    public ExchangeRate findByBase(String base) {
-        return jdbcTemplate.queryForObject("SELECT * FROM exchange_rates WHERE base = ?", new Object[] { base }, ExchangeRate.class);
+    public ExchangeRate findByBase(String code) {
+        return jdbcTemplate.query("SELECT * FROM exchange_rates WHERE code = ?", BeanPropertyRowMapper.newInstance(ExchangeRate.class), code).get(0);
     }
 
 
@@ -72,7 +73,9 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     @Override
     public double convert(String from, String to, double amount) {
         ExchangeRate fromRate = findByBase(from);
+        System.out.println(fromRate.getRate());
         ExchangeRate toRate = findByBase(to);
+        System.out.println(toRate.getRate());
         return amount * fromRate.getRate() / toRate.getRate();
 
     }

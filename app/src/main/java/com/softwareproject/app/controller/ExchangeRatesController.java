@@ -8,6 +8,7 @@ import com.softwareproject.app.repo.ExchangeRatesRepoImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,7 @@ public class ExchangeRatesController {
     @Autowired
     private ExchangeRatesRepoImp exchangeRatesRepoImp;
 
-    @RequestMapping(value = "/convert", method = RequestMethod.GET)
+    @GetMapping(value = "/convert")
     public double convert(@RequestParam String from, @RequestParam String to, @RequestParam double amount) {
         return exchangeRatesRepoImp.convert(from, to, amount);
     }
@@ -28,12 +29,12 @@ public class ExchangeRatesController {
     /**
      * @return
      */
-    @RequestMapping(value = "/codes", method = RequestMethod.GET)
+    @GetMapping(value = "/codes")
     public String[] getAllCodes() {
         return exchangeRatesRepoImp.getAllCodes().toArray(new String[0]);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @GetMapping(value = "/update" )
     public ResponseEntity<String> update() {
         try {
             exchangeRatesRepoImp.save();
