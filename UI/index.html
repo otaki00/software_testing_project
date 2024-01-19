@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
     <title>Currency Exchange</title>
 </head>
+
 <body>
     <div id="tray" class="depth_block">
         <div class="head_container">
@@ -20,11 +23,11 @@
             <div class="currency_container">
                 <div id="bar1_container" class="depth_block">
                     <div id="C_value1" class="depth2_block">
-                        <input type="text">
+                        <input type="text" id="input1" oninput="convert('input1')">
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector1" class="depth2_block">
-                        <select name="" id="">
+                        <select name="" id="select1">
                             <option value="">United States Dollar</option>
                             <option value="">Isreal New Shekel</option>
                         </select>
@@ -32,11 +35,11 @@
                 </div>
                 <div id="bar2_container" class="depth_block">
                     <div id="C_value2" class="depth2_block">
-                        <input type="text">
+                        <input type="text" id="input2" oninput="convert('input2')">
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector2" class="depth2_block">
-                        <select name="" id="">
+                        <select name="" id="select2">
                             <option value="">United States Dollar</option>
                             <option value="">Isreal New Shekel</option>
                         </select>
@@ -46,4 +49,5 @@
         </div>
     </div>
 </body>
+
 </html>
