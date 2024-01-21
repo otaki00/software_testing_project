@@ -39,13 +39,11 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
         }
     }
 
-
     @Override
     public ResponseEntity<String> save() throws JsonMappingException, JsonProcessingException {
 
         // before saving the new exchange rates, delete all the existing exchange rates
         jdbcTemplate.update("DELETE FROM exchange_rates");
-        
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-RapidAPI-Key", apiKey);
@@ -91,7 +89,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
             System.out.println(fromRate.getRate());
             ExchangeRate toRate = findByBase(to);
             System.out.println(toRate.getRate());
-            double result = amount * fromRate.getRate() / toRate.getRate();
+            double result = amount * toRate.getRate() / fromRate.getRate();
 
             return new ResponseEntity<Double>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -103,7 +101,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
 
     @Override
     public ResponseEntity<List<String>> getAllCodes() {
-        
+
         try {
             List<String> codes = jdbcTemplate.queryForList("SELECT code FROM exchange_rates", String.class);
             return new ResponseEntity<List<String>>(codes, HttpStatus.OK);
@@ -112,5 +110,5 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
             return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }

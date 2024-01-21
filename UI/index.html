@@ -16,9 +16,9 @@
         </div>
         <div class="body_container">
             <div id="result_container" class="depth_block">
-                <p id="r_from" class="r_text">500 USD =</p>
-                <p id="r_to" class="r_text"> 1800 ILS</p>
-                <p id="r_ex" class="r_text">1 USD = 3.75 ILS</p>
+                <p id="r_from" class="r_text"></p>
+                <p id="r_to" class="r_text"></p>
+                <p id="r_ex" class="r_text"></p>
             </div>
             <div class="currency_container">
                 <div id="bar1_container" class="depth_block">
@@ -27,9 +27,7 @@
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector1" class="depth2_block">
-                        <select name="" id="select1">
-                            <option value="">United States Dollar</option>
-                            <option value="">Isreal New Shekel</option>
+                        <select name="" id="select1" onchange="convert('input1')">
                         </select>
                     </div>
                 </div>
@@ -39,9 +37,7 @@
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector2" class="depth2_block">
-                        <select name="" id="select2">
-                            <option value="">United States Dollar</option>
-                            <option value="">Isreal New Shekel</option>
+                        <select name="" id="select2" onchange="convert('input1')">
                         </select>
                     </div>
                 </div>

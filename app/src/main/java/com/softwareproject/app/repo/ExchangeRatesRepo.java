@@ -17,5 +17,5 @@ public interface ExchangeRatesRepo {
     ResponseEntity<Double> convert(String from, String to, double amount);
 
     ResponseEntity<List<String>> getAllCodes();
-    
+
 }

@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExchangeRate {
 
-    
     private int id;
     private String base;
     private String code;
     private double rate;
-    
+
 }
