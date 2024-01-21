@@ -11,6 +11,13 @@ window.onload = async function () {
         var select2 = document.getElementById('select2');
         data.sort();
         data.forEach(item => {
+            let banned_currencies=["AUD","BWP","XCD"]
+            if (banned_currencies.includes(item))
+            {
+                //pass
+            }
+            else
+            {
             var option1 = document.createElement('option');
             option1.value = item;
             option1.text = item;
@@ -20,6 +27,7 @@ window.onload = async function () {
             option2.value = item;
             option2.text = item;
             select2.appendChild(option2);
+            }
         });
     }).catch(error => console.error('Error:', error));
 }
