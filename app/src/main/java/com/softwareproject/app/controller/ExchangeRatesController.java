@@ -7,10 +7,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.softwareproject.app.repo.ExchangeRatesRepoImp;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +56,11 @@ public class ExchangeRatesController {
             return new ResponseEntity<String>("{\"message\": \"Error updating exchange rates\"}",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // localhost:8080/api/v1/country-names
+    @GetMapping(value = "/country-names")
+    public ResponseEntity<Map<String, String>> getCountryNameWithSymbols() throws JsonMappingException, JsonProcessingException {
+        return exchangeRatesRepoImp.getCountryNameWithSymbols();
     }
 }
