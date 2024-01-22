@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Include Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    </head>
     <title>Currency Exchange</title>
 </head>
 
@@ -23,7 +29,7 @@
             <div class="currency_container">
                 <div id="bar1_container" class="depth_block">
                     <div id="C_value1" class="depth2_block">
-                        <input type="text" id="input1" oninput="convert('input1')">
+                        <input type="text" id="input1" placeholder="0.0" oninput="convert('input1')">
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector1" class="depth2_block">
@@ -33,7 +39,7 @@
                 </div>
                 <div id="bar2_container" class="depth_block">
                     <div id="C_value2" class="depth2_block">
-                        <input type="text" id="input2" oninput="convert('input2')">
+                        <input type="text" id="input2" placeholder="0.0" oninput="convert('input2')">
                     </div>
                     <div id="separator" class="depth2_block"></div>
                     <div id="currency_selector2" class="depth2_block">
@@ -44,6 +50,9 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

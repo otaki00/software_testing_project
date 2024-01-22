@@ -6,31 +6,58 @@ window.onload = async function () {
     });
 
 
-    await fetch('http://localhost:8080/api/v1/codes').then(response => response.json()).then(data => {
+    await fetch('http://localhost:8080/api/v1/country-names').then(response => response.json()).then(data => {
         var select1 = document.getElementById('select1');
         var select2 = document.getElementById('select2');
-        data.sort();
-        data.forEach(item => {
-            let banned_currencies=["AUD","BWP","XCD"]
-            if (banned_currencies.includes(item))
-            {
+        console.log(data);
+        for (const [key, value] of Object.entries(data)) {
+            let banned_currencies = ["AUD", "BWP", "XCD"]
+            if (banned_currencies.includes(key)) {
                 //pass
-            }
-            else
-            {
-            var option1 = document.createElement('option');
-            option1.value = item;
-            option1.text = item;
-            select1.appendChild(option1);
+            } else {
+                var option1 = document.createElement('option');
+                option1.value = key;
+                option1.text = value+" : "+key;
+                select1.appendChild(option1);
 
-            var option2 = document.createElement('option');
-            option2.value = item;
-            option2.text = item;
-            select2.appendChild(option2);
+                var option2 = document.createElement('option');
+                option2.value = key;
+                option2.text = value + " : " + key;
+                select2.appendChild(option2);
             }
-        });
+        }
+        // data.forEach(item => {
+        //     let banned_currencies=["AUD","BWP","XCD"]
+        //     if ( banned_currencies.includes(item))
+        //     {
+        //         //pass
+        //     }
+        //     else
+        //     {
+        //     var option1 = document.createElement('option');
+        //     option1.value = item;
+        //     option1.text = item;
+        //     select1.appendChild(option1);
+
+        //     var option2 = document.createElement('option');
+        //     option2.value = item;
+        //     option2.text = item;
+        //     select2.appendChild(option2);
+        //     }
+        // });
     }).catch(error => console.error('Error:', error));
 }
+
+
+// let countries = {}
+// // function to call api for get country names symbols
+// // localhost:8080/api/v1/country-names
+// let countryNames = async () => {
+//     await fetch('http://localhost:8080/api/v1/country-names').then(response => response.json()).then(data => {
+//         console.log(data);
+//         countries = data;
+//     }).catch(error => console.error('Error:', error));
+// }
 
 function convert(id) {
     let value = document.getElementById(id).value;

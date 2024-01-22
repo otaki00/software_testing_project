@@ -1,7 +1,10 @@
 package com.softwareproject.app.repo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+// import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +31,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     final String apiUrl = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/latest";
     private final String apiKey = "6783067dd6mshf3f2a37f6be4441p11d94cjsnb59052523375";
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
+    private final String apiForCountryNameWithSymbols = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
 
     @Override
     public ExchangeRate findByBase(String code) {
@@ -108,6 +113,45 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
         } catch (Exception e) {
             // TODO: handle exception
             return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, String>> getCountryNameWithSymbols() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-RapidAPI-Key", apiKey);
+        headers.set("X-RapidAPI-Host", apiHost);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(apiForCountryNameWithSymbols, HttpMethod.GET, entity, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode;
+
+            try {
+                rootNode = objectMapper.readTree(response.getBody());
+                if (rootNode.path("success").asBoolean()) {
+                    Map<String, String> symbolsMap = new HashMap<>();
+
+                    JsonNode symbolsNode = rootNode.path("symbols");
+                    symbolsNode.fields().forEachRemaining(entry -> symbolsMap.put(entry.getKey(), entry.getValue().asText()));
+
+                    return ResponseEntity.ok(symbolsMap);
+                } else {
+                    // Handle the case where the API call was not successful
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                }
+            } catch (Exception e) {
+                // Handle the exception, e.g., log it
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            // Handle the case where the API call itself failed
+            return ResponseEntity.status(response.getStatusCode()).build();
         }
     }
 
