@@ -113,6 +113,10 @@ def test_inputX_reflect_inputY(driver_setup):
     input1.clear()
     input2.clear()
     check_inputX_reflect_inputY(driver, select1, select2, input1, input2, "5.1", "USD", "ILS")
+    print("----------------------------------------------------")
+    input1.clear()
+    input2.clear()
+    check_inputX_reflect_inputY(driver, select1, select2, input1, input2, ".1", "USD", "ILS")
     time.sleep(3)
 def test_if_input_takes_only_positive_value(driver_setup):
     driver, wait = driver_setup
