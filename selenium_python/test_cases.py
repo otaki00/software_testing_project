@@ -27,6 +27,8 @@ def driver_setup(request):
     request.addfinalizer(teardown)
     time.sleep(5)
     return driver, wait
+def is_negative(number):
+    return number >= 0
 def is_numeric(string):
     try:
         float_value = float(string)
@@ -42,7 +44,7 @@ def check_if_input_takes_nonNumeric_values(driver,input,string):
     print("Passed, Only Numeric values was token (if exist)")
        
 
-def can_currency_options_be_same(driver,select1,select2,string):
+def can_currency_options_be_same(select1,select2,string):
     print("Started Testing if currency options can be the same")
     try:
         select1.select_by_value(string)
@@ -72,11 +74,18 @@ def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,curr
     print("Total is: " + str(input_two_value))
     assert rounded_result==input_two_value,"Failed, the Input two doesn't have right value: "+str(rounded_result)
     print("Passed, Input two has got right values")
+def check_if_input_takes_only_positive_value(input):
+    string="-5"
+    input.send_keys(string)
+    assert(is_negative(float(input.get_attribute("value")))), "Failed, Took a negative value"
+    print ("Success, input only took positive value")
+
+
 def test_can_currency_options_be_same(driver_setup):
     driver, wait = driver_setup
     select1 = Select(wait.until(EC.element_to_be_clickable((By.ID, "select1"))))
     select2 = Select(wait.until(EC.element_to_be_clickable((By.ID, "select2"))))
-    can_currency_options_be_same(driver, select1, select2, "ILS")
+    can_currency_options_be_same(select1, select2, "ILS")
 def test_check_if_input_takes_nonNumeric_values(driver_setup):
     driver, wait = driver_setup
     input1 = driver.find_element(By.ID, "input1")
@@ -105,3 +114,7 @@ def test_inputX_reflect_inputY(driver_setup):
     input2.clear()
     check_inputX_reflect_inputY(driver, select1, select2, input1, input2, "5.1", "USD", "ILS")
     time.sleep(3)
+def test_if_input_takes_only_positive_value(driver_setup):
+    driver, wait = driver_setup
+    input1 = driver.find_element(By.ID, "input1")
+    check_if_input_takes_only_positive_value(input1)

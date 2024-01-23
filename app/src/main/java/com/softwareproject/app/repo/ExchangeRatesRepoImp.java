@@ -29,7 +29,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     final String apiUrl = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/latest";
-    private final String apiKey = "6783067dd6mshf3f2a37f6be4441p11d94cjsnb59052523375";
+    private final String apiKey = "6d62cefe2fmshafd5ba4a870d13ap10058ejsnbc0c9a2a4920";
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
     private final String apiForCountryNameWithSymbols = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
 
