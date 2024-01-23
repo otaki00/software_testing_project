@@ -1,5 +1,7 @@
 package com.softwareproject.app.repo;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     final String apiUrl = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/latest";
-    private final String apiKey = "6783067dd6mshf3f2a37f6be4441p11d94cjsnb59052523375";
+    private final String apiKey = "6d62cefe2fmshafd5ba4a870d13ap10058ejsnbc0c9a2a4920";
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
     private final String apiForCountryNameWithSymbols = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
 
@@ -66,6 +68,15 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
         JsonNode ratesNode = rootNode.path("rates");
 
         // Iterate through the rates and save each exchange rate to the database
+        String currentDirectory = System.getProperty("user.dir");
+        File rootDirectory = new File(currentDirectory);
+        String csvFileName = rootDirectory + File.separator + "exchange_rates.csv";
+        try (FileWriter writer = new FileWriter(csvFileName, false)) {
+            // Append Empty text to clear if exist
+            writer.append("");
+        }catch(Exception e){
+            System.out.println(e);
+        }
         ratesNode.fields().forEachRemaining(entry -> {
             String code = entry.getKey();
             double rate = entry.getValue().asDouble();
@@ -77,7 +88,18 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
 
             // Save the new exchange rate to the database
             saveExchangeRateToDatabase(newExchangeRate);
-
+            // Get the current working directory
+        try (FileWriter writer = new FileWriter(csvFileName, true)) {
+            // Append data to the CSV file
+            writer.append(baseCurrency);
+            writer.append(",");
+            writer.append(code);
+            writer.append(",");
+            writer.append(String.valueOf(rate));
+            writer.append("\n");
+        }catch(Exception e){
+            System.out.println(e);
+        }
         });
         return new ResponseEntity<String>("Exchange rates updated successfully", HttpStatus.OK);
     }
