@@ -5,7 +5,7 @@ import time
 import os
 import unittest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -29,6 +29,18 @@ def check_if_input_takes_nonNumeric_values(string,input):
         except:
             print("Failed, The input took a non-numerical String, Which was: " + taken_string)
             input.clear()
+def can_currency_options_be_same(select1,select2,string):
+    print("Started Testing if currency options can be the same")
+    try:
+        select1.select_by_value(string)
+    except:
+        print("Skipped, Can't find such currency")
+        return
+    try:
+        select2.select_by_value(string)
+        print("Error, Selectors got same currency")
+    except:
+        print("Passed, Selectors got different values")
 
 #Get the current directory of the script
 current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -43,12 +55,24 @@ wait=WebDriverWait(driver, 10)
 
 #Opening the website
 driver.get(f"file:{file_path}")
+time.sleep(5)
 
+#Take the first select
+select1=Select(wait.until(EC.element_to_be_clickable((By.ID, "select1"))))
+#Take the second select
+select2=Select(wait.until(EC.element_to_be_clickable((By.ID, "select2"))))
+#Check if currency options can be the same
+print("----------------------------------------------------")
+can_currency_options_be_same(select1,select2,"ILS")
 #Take the first input
+
 input1 = driver.find_element(By.ID, "input1")
 #Take the second input
 input2 = driver.find_element(By.ID, "input2")
 #Check if the input takes non-numerical string or not
+print("----------------------------------------------------")
 check_if_input_takes_nonNumeric_values("5.5",input1)
+print("----------------------------------------------------")
 check_if_input_takes_nonNumeric_values("x1t",input1)
+print("----------------------------------------------------")
 check_if_input_takes_nonNumeric_values("5..5",input1)
