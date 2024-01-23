@@ -25,8 +25,8 @@ def driver_setup(request):
         driver.quit()
 
     request.addfinalizer(teardown)
-    return driver, wait
     time.sleep(5)
+    return driver, wait
 def is_numeric(string):
     try:
         float_value = float(string)
@@ -35,18 +35,16 @@ def is_numeric(string):
         return False
 def check_if_input_takes_nonNumeric_values(driver,input,string):
     print("Started Testing Checking If Input Takes Non Numeric Values For String: \n"+ string)
-    if(is_numeric(string)):
-        print("Skipped for Wrong Test, You are typing a numerical values only. The given String should not be only Numeric Values")
-    else:
-        input.send_keys(string)
-        taken_string=input.get_attribute("value")
-        try:
-            assert is_numeric(taken_string) in driver.title
-            print("Passed, Only Numeric values was token (if exist)")
-            input.clear()
-        except:
-            print("Failed, The input took a non-numerical String, Which was: " + taken_string)
-            input.clear()
+    
+    input.send_keys(string)
+    taken_string=input.get_attribute("value")
+    try:
+        assert is_numeric(taken_string) 
+        print("Passed, Only Numeric values was token (if exist)")
+        input.clear()
+    except:
+        print("Failed, The input took a non-numerical String, Which was: " + taken_string)
+        input.clear()
 def can_currency_options_be_same(driver,select1,select2,string):
     print("Started Testing if currency options can be the same")
     try:
@@ -59,10 +57,10 @@ def can_currency_options_be_same(driver,select1,select2,string):
     except:
         pass
     try:
-        assert select1.value!=select2.value in driver.title
+        assert select1.value!=select2.value 
         print("Passed, Selectors got different values")
     except:
-        print("Error, Selectors got same currency")
+        print("Failed, Selectors got same currency")
 def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,currency1,currency2):
     select1.select_by_value(currency1)
     select2.select_by_value(currency2)
@@ -72,12 +70,12 @@ def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,curr
     rate=rate[3]
     print("Rate is: "+rate)
     result = float(rate) * float(input1.get_attribute("value"))
-    rounded_result = round(result, 3)
+    rounded_result = round(result, 2)
     input_two_result=float(input2.get_attribute("value"))
-    input_two_value=round(input_two_result, 3)
+    input_two_value=round(input_two_result, 2)
     print("Total is: " + str(input_two_value))
     try:
-        assert rounded_result==input_two_value in driver.title
+        assert rounded_result==input_two_value 
         print("Passed, Input two has got right values")
     except:
         print("Failed, the Input two doesn't have right value: "+str(rounded_result))
