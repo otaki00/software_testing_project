@@ -38,13 +38,10 @@ def check_if_input_takes_nonNumeric_values(driver,input,string):
     
     input.send_keys(string)
     taken_string=input.get_attribute("value")
-    try:
-        assert is_numeric(taken_string) 
-        print("Passed, Only Numeric values was token (if exist)")
-        input.clear()
-    except:
-        print("Failed, The input took a non-numerical String, Which was: " + taken_string)
-        input.clear()
+    assert is_numeric(taken_string) ,"Failed, The input took a non-numerical String, Which was: " + taken_string
+    print("Passed, Only Numeric values was token (if exist)")
+       
+
 def can_currency_options_be_same(driver,select1,select2,string):
     print("Started Testing if currency options can be the same")
     try:
@@ -56,11 +53,10 @@ def can_currency_options_be_same(driver,select1,select2,string):
         select2.select_by_value(string)
     except:
         pass
-    try:
-        assert select1.value!=select2.value 
-        print("Passed, Selectors got different values")
-    except:
-        print("Failed, Selectors got same currency")
+    is_equal=select1.first_selected_option.get_attribute("value")!=(select2.first_selected_option.get_attribute("value"))
+    assert is_equal,"Failed, Currency one is the same type of Currency two."
+    print("Passed, Selectors got different values")
+    
 def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,currency1,currency2):
     select1.select_by_value(currency1)
     select2.select_by_value(currency2)
@@ -74,12 +70,8 @@ def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,curr
     input_two_result=float(input2.get_attribute("value"))
     input_two_value=round(input_two_result, 2)
     print("Total is: " + str(input_two_value))
-    try:
-        assert rounded_result==input_two_value 
-        print("Passed, Input two has got right values")
-    except:
-        print("Failed, the Input two doesn't have right value: "+str(rounded_result))
-
+    assert rounded_result==input_two_value,"Failed, the Input two doesn't have right value: "+str(rounded_result)
+    print("Passed, Input two has got right values")
 def test_can_currency_options_be_same(driver_setup):
     driver, wait = driver_setup
     select1 = Select(wait.until(EC.element_to_be_clickable((By.ID, "select1"))))
@@ -89,13 +81,19 @@ def test_check_if_input_takes_nonNumeric_values(driver_setup):
     driver, wait = driver_setup
     input1 = driver.find_element(By.ID, "input1")
     print("----------------------------------------------------")
+    input1.clear()
     check_if_input_takes_nonNumeric_values(driver, input1, "5.5")
+    
     time.sleep(3)
     print("----------------------------------------------------")
+    input1.clear()
     check_if_input_takes_nonNumeric_values(driver, input1, "x1t")
+    
     time.sleep(3)
     print("----------------------------------------------------")
+    input1.clear()
     check_if_input_takes_nonNumeric_values(driver, input1, "5..5")
+    
 def test_inputX_reflect_inputY(driver_setup):
     driver, wait = driver_setup
     select1 = Select(wait.until(EC.element_to_be_clickable((By.ID, "select1"))))
@@ -103,5 +101,7 @@ def test_inputX_reflect_inputY(driver_setup):
     input1 = driver.find_element(By.ID, "input1")
     input2 = driver.find_element(By.ID, "input2")
     print("----------------------------------------------------")
+    input1.clear()
+    input2.clear()
     check_inputX_reflect_inputY(driver, select1, select2, input1, input2, "5.1", "USD", "ILS")
     time.sleep(3)

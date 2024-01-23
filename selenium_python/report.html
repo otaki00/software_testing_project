@@ -3,332 +3,11 @@
   <head>
     <meta charset="utf-8"/>
     <title id="head-title">report.html</title>
-      <style type="text/css">body {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  /* do not increase min-width as some may use split screens */
-  min-width: 800px;
-  color: #999;
-}
-
-h1 {
-  font-size: 24px;
-  color: black;
-}
-
-h2 {
-  font-size: 16px;
-  color: black;
-}
-
-p {
-  color: black;
-}
-
-a {
-  color: #999;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-/******************************
- * SUMMARY INFORMATION
- ******************************/
-#environment td {
-  padding: 5px;
-  border: 1px solid #e6e6e6;
-  vertical-align: top;
-}
-#environment tr:nth-child(odd) {
-  background-color: #f6f6f6;
-}
-#environment ul {
-  margin: 0;
-  padding: 0 20px;
-}
-
-/******************************
- * TEST RESULT COLORS
- ******************************/
-span.passed,
-.passed .col-result {
-  color: green;
-}
-
-span.skipped,
-span.xfailed,
-span.rerun,
-.skipped .col-result,
-.xfailed .col-result,
-.rerun .col-result {
-  color: orange;
-}
-
-span.error,
-span.failed,
-span.xpassed,
-.error .col-result,
-.failed .col-result,
-.xpassed .col-result {
-  color: red;
-}
-
-.col-links__extra {
-  margin-right: 3px;
-}
-
-/******************************
- * RESULTS TABLE
- *
- * 1. Table Layout
- * 2. Extra
- * 3. Sorting items
- *
- ******************************/
-/*------------------
- * 1. Table Layout
- *------------------*/
-#results-table {
-  border: 1px solid #e6e6e6;
-  color: #999;
-  font-size: 12px;
-  width: 100%;
-}
-#results-table th,
-#results-table td {
-  padding: 5px;
-  border: 1px solid #e6e6e6;
-  text-align: left;
-}
-#results-table th {
-  font-weight: bold;
-}
-
-/*------------------
- * 2. Extra
- *------------------*/
-.logwrapper {
-  max-height: 230px;
-  overflow-y: scroll;
-  background-color: #e6e6e6;
-}
-.logwrapper.expanded {
-  max-height: none;
-}
-.logwrapper.expanded .logexpander:after {
-  content: "collapse [-]";
-}
-.logwrapper .logexpander {
-  z-index: 1;
-  position: sticky;
-  top: 10px;
-  width: max-content;
-  border: 1px solid;
-  border-radius: 3px;
-  padding: 5px 7px;
-  margin: 10px 0 10px calc(100% - 80px);
-  cursor: pointer;
-  background-color: #e6e6e6;
-}
-.logwrapper .logexpander:after {
-  content: "expand [+]";
-}
-.logwrapper .logexpander:hover {
-  color: #000;
-  border-color: #000;
-}
-.logwrapper .log {
-  min-height: 40px;
-  position: relative;
-  top: -50px;
-  height: calc(100% + 50px);
-  border: 1px solid #e6e6e6;
-  color: black;
-  display: block;
-  font-family: "Courier New", Courier, monospace;
-  padding: 5px;
-  padding-right: 80px;
-  white-space: pre-wrap;
-}
-
-div.media {
-  border: 1px solid #e6e6e6;
-  float: right;
-  height: 240px;
-  margin: 0 5px;
-  overflow: hidden;
-  width: 320px;
-}
-
-.media-container {
-  display: grid;
-  grid-template-columns: 25px auto 25px;
-  align-items: center;
-  flex: 1 1;
-  overflow: hidden;
-  height: 200px;
-}
-
-.media-container--fullscreen {
-  grid-template-columns: 0px auto 0px;
-}
-
-.media-container__nav--right,
-.media-container__nav--left {
-  text-align: center;
-  cursor: pointer;
-}
-
-.media-container__viewport {
-  cursor: pointer;
-  text-align: center;
-  height: inherit;
-}
-.media-container__viewport img,
-.media-container__viewport video {
-  object-fit: cover;
-  width: 100%;
-  max-height: 100%;
-}
-
-.media__name,
-.media__counter {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex: 0 0 25px;
-  align-items: center;
-}
-
-.collapsible td:not(.col-links) {
-  cursor: pointer;
-}
-.collapsible td:not(.col-links):hover::after {
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-}
-
-.col-result {
-  width: 130px;
-}
-.col-result:hover::after {
-  content: " (hide details)";
-}
-
-.col-result.collapsed:hover::after {
-  content: " (show details)";
-}
-
-#environment-header h2:hover::after {
-  content: " (hide details)";
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-#environment-header.collapsed h2:hover::after {
-  content: " (show details)";
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-/*------------------
- * 3. Sorting items
- *------------------*/
-.sortable {
-  cursor: pointer;
-}
-.sortable.desc:after {
-  content: " ";
-  position: relative;
-  left: 5px;
-  bottom: -12.5px;
-  border: 10px solid #4caf50;
-  border-bottom: 0;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-.sortable.asc:after {
-  content: " ";
-  position: relative;
-  left: 5px;
-  bottom: 12.5px;
-  border: 10px solid #4caf50;
-  border-top: 0;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-.hidden, .summary__reload__button.hidden {
-  display: none;
-}
-
-.summary__data {
-  flex: 0 0 550px;
-}
-.summary__reload {
-  flex: 1 1;
-  display: flex;
-  justify-content: center;
-}
-.summary__reload__button {
-  flex: 0 0 300px;
-  display: flex;
-  color: white;
-  font-weight: bold;
-  background-color: #4caf50;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.summary__reload__button:hover {
-  background-color: #46a049;
-}
-.summary__spacer {
-  flex: 0 0 550px;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-}
-
-.filters,
-.collapse {
-  display: flex;
-  align-items: center;
-}
-.filters button,
-.collapse button {
-  color: #999;
-  border: none;
-  background: none;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.filters button:hover,
-.collapse button:hover {
-  color: #ccc;
-}
-
-.filter__label {
-  margin-right: 10px;
-}
-
-      </style>
-    
+      <link href="assets\style.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <h1 id="title">report.html</h1>
-    <p>Report generated on 23-Jan-2024 at 20:59:41 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+    <p>Report generated on 23-Jan-2024 at 21:29:30 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
         v4.1.1</p>
     <div id="environment-header">
       <h2>Environment</h2>
@@ -382,7 +61,7 @@ div.media {
         <h2>Summary</h2>
         <div class="additional-summary prefix">
         </div>
-        <p class="run-count">3 tests took 00:00:19.</p>
+        <p class="run-count">3 tests took 00:00:17.</p>
         <p class="filter">(Un)check the boxes to filter the results.</p>
         <div class="summary__reload">
           <div class="summary__reload__button hidden" onclick="location.reload()">
@@ -392,10 +71,10 @@ div.media {
         <div class="summary__spacer"></div>
         <div class="controls">
           <div class="filters">
-            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" disabled/>
-            <span class="failed">0 Failed,</span>
-            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" />
-            <span class="passed">3 Passed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" />
+            <span class="failed">3 Failed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" disabled/>
+            <span class="passed">0 Passed,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="skipped" disabled/>
             <span class="skipped">0 Skipped,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xfailed" disabled/>
@@ -429,7 +108,7 @@ div.media {
     </table>
   </body>
   <footer>
-    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.10.11&#34;, &#34;Platform&#34;: &#34;Windows-10-10.0.19045-SP0&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;7.4.4&#34;, &#34;pluggy&#34;: &#34;1.3.0&#34;}, &#34;Plugins&#34;: {&#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.0.0&#34;}, &#34;JAVA_HOME&#34;: &#34;C:\\Users\\saleh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.7.7-hotspot\\&#34;}, &#34;tests&#34;: {&#34;test_cases.py::test_can_currency_options_be_same&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_can_currency_options_be_same&#34;, &#34;duration&#34;: &#34;00:00:07&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_can_currency_options_be_same&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:07&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;----------------------------- Captured stdout call -----------------------------\nStarted Testing if currency options can be the same\nError, Selectors got same currency\n&#34;}], &#34;test_cases.py::test_check_if_input_takes_nonNumeric_values&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_check_if_input_takes_nonNumeric_values&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_check_if_input_takes_nonNumeric_values&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;----------------------------- Captured stdout call -----------------------------\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \n5.5\nPassed, Only Numeric values was token (if exist)\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \nx1t\nPassed, Only Numeric values was token (if exist)\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \n5..5\nFailed, The input took a non-numerical String, Which was: 5..5\n&#34;}], &#34;test_cases.py::test_inputX_reflect_inputY&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_inputX_reflect_inputY&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_inputX_reflect_inputY&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;----------------------------- Captured stdout call -----------------------------\n----------------------------------------------------\nRate is: 3.754897\nTotal is: 19.15\nPassed, Input two has got right values\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report.html&#34;}"></div>
+    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.10.11&#34;, &#34;Platform&#34;: &#34;Windows-10-10.0.19045-SP0&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;7.4.4&#34;, &#34;pluggy&#34;: &#34;1.3.0&#34;}, &#34;Plugins&#34;: {&#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.0.0&#34;}, &#34;JAVA_HOME&#34;: &#34;C:\\Users\\saleh\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.7.7-hotspot\\&#34;}, &#34;tests&#34;: {&#34;test_cases.py::test_can_currency_options_be_same&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_can_currency_options_be_same&#34;, &#34;duration&#34;: &#34;00:00:07&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_can_currency_options_be_same&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:07&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;driver_setup = (&amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;, &amp;lt;selenium.webdriver.support.wait.WebDriverWait (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;)\n\n    def test_can_currency_options_be_same(driver_setup):\n        driver, wait = driver_setup\n        select1 = Select(wait.until(EC.element_to_be_clickable((By.ID, &amp;quot;select1&amp;quot;))))\n        select2 = Select(wait.until(EC.element_to_be_clickable((By.ID, &amp;quot;select2&amp;quot;))))\n&amp;gt;       can_currency_options_be_same(driver, select1, select2, &amp;quot;ILS&amp;quot;)\n\ntest_cases.py:79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ndriver = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;, select1 = &amp;lt;selenium.webdriver.support.select.Select object at 0x00000293F71F85E0&amp;gt;\nselect2 = &amp;lt;selenium.webdriver.support.select.Select object at 0x00000293F71F9A20&amp;gt;, string = &amp;#x27;ILS&amp;#x27;\n\n    def can_currency_options_be_same(driver,select1,select2,string):\n        print(&amp;quot;Started Testing if currency options can be the same&amp;quot;)\n        try:\n            select1.select_by_value(string)\n        except:\n            print(&amp;quot;Skipped, Can&amp;#x27;t find such currency&amp;quot;)\n            return\n        try:\n            select2.select_by_value(string)\n        except:\n            pass\n        is_equal=select1.first_selected_option.get_attribute(&amp;quot;value&amp;quot;)!=(select2.first_selected_option.get_attribute(&amp;quot;value&amp;quot;))\n&amp;gt;       assert is_equal,&amp;quot;Failed, Currency one is the same type of Currency two.&amp;quot;\nE       AssertionError: Failed, Currency one is the same type of Currency two.\nE       assert False\n\ntest_cases.py:57: AssertionError\n\n----------------------------- Captured stdout call -----------------------------\nStarted Testing if currency options can be the same\n&#34;}], &#34;test_cases.py::test_check_if_input_takes_nonNumeric_values&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_check_if_input_takes_nonNumeric_values&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_check_if_input_takes_nonNumeric_values&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;driver_setup = (&amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;, &amp;lt;selenium.webdriver.support.wait.WebDriverWait (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;)\n\n    def test_check_if_input_takes_nonNumeric_values(driver_setup):\n        driver, wait = driver_setup\n        input1 = driver.find_element(By.ID, &amp;quot;input1&amp;quot;)\n        print(&amp;quot;----------------------------------------------------&amp;quot;)\n        input1.clear()\n        check_if_input_takes_nonNumeric_values(driver, input1, &amp;quot;5.5&amp;quot;)\n    \n        time.sleep(3)\n        print(&amp;quot;----------------------------------------------------&amp;quot;)\n        input1.clear()\n        check_if_input_takes_nonNumeric_values(driver, input1, &amp;quot;x1t&amp;quot;)\n    \n        time.sleep(3)\n        print(&amp;quot;----------------------------------------------------&amp;quot;)\n        input1.clear()\n&amp;gt;       check_if_input_takes_nonNumeric_values(driver, input1, &amp;quot;5..5&amp;quot;)\n\ntest_cases.py:95: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ndriver = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;\ninput = &amp;lt;selenium.webdriver.remote.webelement.WebElement (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;, element=&amp;quot;D8D14A6C474A6345C1E504336E85DFC8_element_678&amp;quot;)&amp;gt;, string = &amp;#x27;5..5&amp;#x27;\n\n    def check_if_input_takes_nonNumeric_values(driver,input,string):\n        print(&amp;quot;Started Testing Checking If Input Takes Non Numeric Values For String: \\n&amp;quot;+ string)\n    \n        input.send_keys(string)\n        taken_string=input.get_attribute(&amp;quot;value&amp;quot;)\n&amp;gt;       assert is_numeric(taken_string) ,&amp;quot;Failed, The input took a non-numerical String, Which was: &amp;quot; + taken_string\nE       AssertionError: Failed, The input took a non-numerical String, Which was: 5..5\nE       assert False\nE        +  where False = is_numeric(&amp;#x27;5..5&amp;#x27;)\n\ntest_cases.py:41: AssertionError\n\n----------------------------- Captured stdout call -----------------------------\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \n5.5\nPassed, Only Numeric values was token (if exist)\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \nx1t\nPassed, Only Numeric values was token (if exist)\n----------------------------------------------------\nStarted Testing Checking If Input Takes Non Numeric Values For String: \n5..5\n&#34;}], &#34;test_cases.py::test_inputX_reflect_inputY&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;test_cases.py::test_inputX_reflect_inputY&#34;, &#34;duration&#34;: &#34;00:00:03&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;test_cases.py::test_inputX_reflect_inputY&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:03&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;driver_setup = (&amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;, &amp;lt;selenium.webdriver.support.wait.WebDriverWait (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;)\n\n    def test_inputX_reflect_inputY(driver_setup):\n        driver, wait = driver_setup\n        select1 = Select(wait.until(EC.element_to_be_clickable((By.ID, &amp;quot;select1&amp;quot;))))\n        select2 = Select(wait.until(EC.element_to_be_clickable((By.ID, &amp;quot;select2&amp;quot;))))\n        input1 = driver.find_element(By.ID, &amp;quot;input1&amp;quot;)\n        input2 = driver.find_element(By.ID, &amp;quot;input2&amp;quot;)\n        print(&amp;quot;----------------------------------------------------&amp;quot;)\n        input1.clear()\n        input2.clear()\n&amp;gt;       check_inputX_reflect_inputY(driver, select1, select2, input1, input2, &amp;quot;5.1&amp;quot;, &amp;quot;USD&amp;quot;, &amp;quot;ILS&amp;quot;)\n\ntest_cases.py:106: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\ndriver = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;)&amp;gt;, select1 = &amp;lt;selenium.webdriver.support.select.Select object at 0x00000293F72AD900&amp;gt;\nselect2 = &amp;lt;selenium.webdriver.support.select.Select object at 0x00000293F72ADA20&amp;gt;\ninput1 = &amp;lt;selenium.webdriver.remote.webelement.WebElement (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;, element=&amp;quot;D8D14A6C474A6345C1E504336E85DFC8_element_678&amp;quot;)&amp;gt;\ninput2 = &amp;lt;selenium.webdriver.remote.webelement.WebElement (session=&amp;quot;835512d1c9a88fb0f62808fb7d228c60&amp;quot;, element=&amp;quot;D8D14A6C474A6345C1E504336E85DFC8_element_681&amp;quot;)&amp;gt;, string = &amp;#x27;5.1&amp;#x27;, currency1 = &amp;#x27;USD&amp;#x27;\ncurrency2 = &amp;#x27;ILS&amp;#x27;\n\n    def check_inputX_reflect_inputY(driver,select1,select2,input1,input2,string,currency1,currency2):\n        select1.select_by_value(currency1)\n        select2.select_by_value(currency2)\n        input1.send_keys(string)\n        time.sleep(1)\n        rate=driver.find_element(By.ID, &amp;quot;r_ex&amp;quot;).text.split(&amp;quot; &amp;quot;)\n        rate=rate[3]\n        print(&amp;quot;Rate is: &amp;quot;+rate)\n        result = float(rate) * float(input1.get_attribute(&amp;quot;value&amp;quot;))\n        rounded_result = round(result, 2)\n        input_two_result=float(input2.get_attribute(&amp;quot;value&amp;quot;))\n        input_two_value=round(input_two_result, 2)\n        print(&amp;quot;Total is: &amp;quot; + str(input_two_value))\n&amp;gt;       assert rounded_result==input_two_value,&amp;quot;Failed, the Input two doesn&amp;#x27;t have right value: &amp;quot;+str(rounded_result)\nE       AssertionError: Failed, the Input two doesn&amp;#x27;t have right value: 19.15\nE       assert 19.15 == 18.77\n\ntest_cases.py:73: AssertionError\n\n----------------------------- Captured stdout call -----------------------------\n----------------------------------------------------\nRate is: 3.754905\nTotal is: 18.77\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report.html&#34;}"></div>
     <script>
       (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { getCollapsedCategory, setCollapsedIds } = require('./storage.js')
