@@ -20,4 +20,10 @@ public class ExchangeRate {
         this.code = code;
         this.rate = rate;
     }
+
+    public ExchangeRate(String code, double rate) {
+        this.base = "EUR";
+        this.code = code;
+        this.rate = rate;
+    }
 }
