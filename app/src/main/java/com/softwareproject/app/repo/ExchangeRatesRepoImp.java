@@ -1,7 +1,10 @@
 package com.softwareproject.app.repo;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +33,27 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private FileReaderRepo fileReaderRepo;
     final String apiUrl = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/latest";
     private final String apiKey = "6d62cefe2fmshafd5ba4a870d13ap10058ejsnbc0c9a2a4920";
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
     private final String apiForCountryNameWithSymbols = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
 
+
+
+
     @Override
     public ExchangeRate findByBase(String code) {
+
+        if (code == null) {
+            return null;
+        }
+
+        if(code == ""){
+            return null;
+        }
+
         try {
             return jdbcTemplate.query("SELECT * FROM exchange_rates WHERE code = ?",
                     BeanPropertyRowMapper.newInstance(ExchangeRate.class), code).get(0);
@@ -45,6 +62,10 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
             return null;
         }
     }
+
+
+    // 
+
 
     @Override
     public ResponseEntity<String> save() throws JsonMappingException, JsonProcessingException {
@@ -104,13 +125,27 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
         return new ResponseEntity<String>("Exchange rates updated successfully", HttpStatus.OK);
     }
 
-    private void saveExchangeRateToDatabase(ExchangeRate exchangeRate) {
+    public void saveExchangeRateToDatabase(ExchangeRate exchangeRate) {
         jdbcTemplate.update("INSERT INTO exchange_rates (base, code, rate) VALUES (?, ?, ?)",
                 exchangeRate.getBase(), exchangeRate.getCode(), exchangeRate.getRate());
     }
 
     @Override
     public ResponseEntity<Double> convert(String from, String to, double amount) {
+
+        
+        if(from == null || to == null){
+            return new ResponseEntity<Double>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        if (from.equals(to)) {
+            return new ResponseEntity<Double>(amount, HttpStatus.OK);
+        }
+
+        if (amount < 0) {
+            return new ResponseEntity<Double>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         try {
             ExchangeRate fromRate = findByBase(from);
             System.out.println(fromRate.getRate());
@@ -121,7 +156,8 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
             return new ResponseEntity<Double>(result, HttpStatus.OK);
         } catch (Exception e) {
             // TODO: handle exception
-            return new ResponseEntity<Double>(HttpStatus.INTERNAL_SERVER_ERROR);
+            
+            return new ResponseEntity<Double>(0.0, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -175,6 +211,29 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
             // Handle the case where the API call itself failed
             return ResponseEntity.status(response.getStatusCode()).build();
         }
+    }
+
+
+    @Override
+    public ExchangeRate findByCodeFromCSVFile(String code) {
+        String currentDirectory = System.getProperty("user.dir");
+        String csvFileName = currentDirectory + File.separator + "exchange_rates.csv";
+        String splitBy = ",";
+
+        try {
+            List<String> lines = fileReaderRepo.readLines(csvFileName);
+            for (String line : lines) {
+                String[] exchangeRateData = line.split(splitBy);
+                if (exchangeRateData.length >= 3 && exchangeRateData[1].equals(code)) {
+                    String base = exchangeRateData[0];
+                    double rate = Double.parseDouble(exchangeRateData[2]);
+                    return new ExchangeRate(base, code, rate);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

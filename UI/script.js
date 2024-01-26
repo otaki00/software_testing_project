@@ -9,6 +9,7 @@ window.onload = async function () {
     await fetch('http://localhost:8080/api/v1/country-names').then(response => response.json()).then(data => {
         var select1 = document.getElementById('select1');
         var select2 = document.getElementById('select2');
+        console.log(data);
 
         data = new Map([...Object.entries(data)].sort((a, b) => a[1] > b[1] ? 1 : -1));
         for (const [key, value] of data.entries()) {

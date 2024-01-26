@@ -23,4 +23,6 @@ public interface ExchangeRatesRepo {
 
     ResponseEntity<Map<String, String>> getCountryNameWithSymbols() throws JsonMappingException, JsonProcessingException;
 
+
+    ExchangeRate findByCodeFromCSVFile(String code);
 }

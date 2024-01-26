@@ -15,4 +15,9 @@ public class ExchangeRate {
     private String code;
     private double rate;
 
+    public ExchangeRate(String base, String code, double rate) {
+        this.base = base;
+        this.code = code;
+        this.rate = rate;
+    }
 }
