@@ -1,9 +1,9 @@
 window.onload = async function () {
-    await fetch('http://localhost:8080/api/v1/update').then(response => response.text()).then(data => {
-        console.log(data);
-    }).catch(error => {
-        console.error('Error Updating Exchange rates:', error);
-    });
+    //await fetch('http://localhost:8080/api/v1/update').then(response => response.text()).then(data => {
+    //    console.log(data);
+    //}).catch(error => {
+    //    console.error('Error Updating Exchange rates:', error);
+    //});
 
 
     await fetch('http://localhost:8080/api/v1/country-names').then(response => response.json()).then(data => {

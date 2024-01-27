@@ -35,7 +35,7 @@ public class ExchangeRatesRepoImp implements ExchangeRatesRepo {
     private JdbcTemplate jdbcTemplate;
     private FileReaderRepo fileReaderRepo;
     final String apiUrl = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/latest";
-    private final String apiKey = "6d62cefe2fmshafd5ba4a870d13ap10058ejsnbc0c9a2a4920";
+    private final String apiKey = "ec47f33857msh32e02c6f4e2503dp1e644djsn7f2c9f051327";
     private final String apiHost = "currency-conversion-and-exchange-rates.p.rapidapi.com";
     private final String apiForCountryNameWithSymbols = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
 
